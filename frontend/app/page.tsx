@@ -10,8 +10,8 @@ import { GrLinkNext } from "react-icons/gr";
 
 export default function Home() {
   const router = useRouter();
-  const [username, setUsername] = useState<String>("");
-  const [randomName, setRandomName] = useState<String>("");
+  const [username, setUsername] = useState<string>("");
+  const [randomName, setRandomName] = useState<string>("");
   const [usernameError, setUsernameError] = useState<boolean>(false);
   const [rollCompleted, setRollCompleted] = useState<boolean>(false);
 

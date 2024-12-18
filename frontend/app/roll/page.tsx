@@ -3,9 +3,10 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import { PiHandTapThin } from "react-icons/pi";
 
-export default function Roll() {
+function Roll() {
   const searchParams = useSearchParams();
   const username = searchParams.get("username");
 
@@ -51,4 +52,12 @@ export default function Roll() {
       </div>
     </section>
   );
+}
+
+export default function Page() {
+  return (
+    <Suspense>
+      <Roll/>
+    </Suspense>
+  )
 }
