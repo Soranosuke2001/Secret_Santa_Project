@@ -9,7 +9,7 @@ from helper import read_json, write_json
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-logging.basicConfig(filename='app.log', level=logging.DEBUG)
+logging.basicConfig(level=logging.DEBUG)
 
 @app.route('/check/user')
 def create_user():
