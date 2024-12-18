@@ -20,8 +20,7 @@ def create_user():
 
     if username in names.keys():
         # set the login to true
-        # if not names[username]["login"]:
-        if not names.get(username).get("login"):
+        if not names[username]["login"]:
             names[username]["login"] = True
             write_json(names)
             return { "message": "valid" }, 200
@@ -38,16 +37,14 @@ def roll():
     names = read_json()
 
     # check if the username is part of family
-    # if names[username]["family"]:
-    if names.get(username).get("family"):
+    if names[username]["family"]:
         # create a list of all names possible (not chosen yet and excluding self)
         options = []
         for name in names:
             if name == username:
                 continue
 
-            # if names[name]["chosen"]:
-            if names.get(name).get("chosen"):
+            if names[name]["chosen"]:
                 continue
             
             options.append(name)
@@ -65,20 +62,17 @@ def roll():
         return { "message": random_name.capitalize() }, 200
     
     # if the username is not part of family
-    # if not names[username]["family"]:
-    if not names.get(username).get("family"):
+    if not names[username]["family"]:
         # create a list of all names possible (not chosen yet and excluding self and part of family)
         options = []
         for name in names:
             if name == username:
                 continue
                 
-            # if names[name]["chosen"]:
-            if names.get(name).get("chosen"):
+            if names[name]["chosen"]:
                 continue
                 
-            # if not names[name]["family"]:
-            if not names.get(name).get("family"):
+            if not names[name]["family"]:
                 continue
                 
             options.append(name)
