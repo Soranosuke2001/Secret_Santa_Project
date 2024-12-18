@@ -2,13 +2,13 @@ version: "3.8"
 
 services:
   backend:
-    image: ../backend:latest
+    image: ../backend
     platform: linux/amd64
     networks:
       - api.network
   
   frontend:
-    image: ../frontend:latest
+    image: ../frontend
     platform: linux/amd64
     networks:
       - api.network
