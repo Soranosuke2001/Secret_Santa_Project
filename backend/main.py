@@ -9,7 +9,14 @@ from helper import read_json, write_json
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-logging.basicConfig(level=logging.DEBUG)
+handler = logging.StreamHandler()
+handler.setLevel(logging.DEBUG)  # Adjust the log level as needed
+formatter = logging.Formatter(
+    "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
+handler.setFormatter(formatter)
+app.logger.addHandler(handler)
+app.logger.setLevel(logging.DEBUG)
 
 @app.route('/check/user')
 def create_user():
