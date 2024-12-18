@@ -11,7 +11,6 @@ import { GrLinkNext } from "react-icons/gr";
 export default function Home() {
   const router = useRouter();
   const [username, setUsername] = useState<string>("");
-  const [randomName, setRandomName] = useState<string>("");
   const [usernameError, setUsernameError] = useState<boolean>(false);
   const [rollCompleted, setRollCompleted] = useState<boolean>(false);
 
@@ -25,9 +24,9 @@ export default function Home() {
     fetch(`${process.env.NEXT_PUBLIC_CHECK_USERNAME}?username=${username}`)
       .then((response) => response.json())
       .then((data) => {
-        if (data === "invalid") {
+        if (data.message === "invalid") {
           setUsernameError(true);
-        } else if (data === "completed") {
+        } else if (data.message === "completed") {
           setRollCompleted(true);
         } else {
           setRollCompleted(false);
@@ -47,17 +46,15 @@ export default function Home() {
     fetch(`${process.env.NEXT_PUBLIC_ROLL_USERNAME}?username=${username}`)
       .then((response) => response.json())
       .then((data) => {
-        if (data === "error") {
+        if (data.message === "error") {
           router.push('/error')
         }
-        setRandomName(data)
+        router.push(`/roll?username=${data.message}`);
       })
       .catch((e) => {
         console.log(e)
         router.push('/error')
       })
-
-    router.push(`/roll?username=${randomName}`);
   }
 
   return (

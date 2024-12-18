@@ -35,18 +35,6 @@
         "family": true,
         "chosen": false
     },
-    "ayano": {
-        "name": "ayano",
-        "login": false,
-        "family": false,
-        "chosen": false
-    },
-    "satoshi": {
-        "name": "satoshi",
-        "login": false,
-        "family": false,
-        "chosen": false
-    },
     "aika": {
         "name": "aika",
         "login": false,
@@ -55,6 +43,18 @@
     },
     "ritsuki": {
         "name": "ritsuki",
+        "login": false,
+        "family": false,
+        "chosen": false
+    },
+    "ayano": {
+        "name": "ayano",
+        "login": false,
+        "family": false,
+        "chosen": false
+    },
+    "satoshi": {
+        "name": "satoshi",
         "login": false,
         "family": false,
         "chosen": false

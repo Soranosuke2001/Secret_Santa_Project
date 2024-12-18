@@ -13,19 +13,22 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 def create_user():
     username = request.args.get("username").lower()
 
-    with open('data.json', 'w') as f:
-        names = json.load(f)
+    names = read_json()
 
-        if username in names.keys():
-            # set the login to true
-            if names[username]["login"] == False:
-                names[username]["login"] = True
-                json.dump(names, f, indent=4)
-                return "valid"
-            
-            return "completed"
+    if names == {}:
+        return { "message": "invalid" }, 200
 
-    return "invalid"
+    if username in names.keys():
+        # set the login to true
+        # if not names[username]["login"]:
+        if not names.get(username).get("login"):
+            names[username]["login"] = True
+            write_json(names)
+            return { "message": "valid" }, 200
+        
+        return { "message": "completed" }, 200
+
+    return { "message": "invalid" }, 200
 
 @app.route('/roll')
 def roll():
@@ -35,14 +38,16 @@ def roll():
     names = read_json()
 
     # check if the username is part of family
-    if names[username]["family"]:
+    # if names[username]["family"]:
+    if names.get(username).get("family"):
         # create a list of all names possible (not chosen yet and excluding self)
         options = []
         for name in names:
             if name == username:
                 continue
 
-            if names[name]["chosen"]:
+            # if names[name]["chosen"]:
+            if names.get(name).get("chosen"):
                 continue
             
             options.append(name)
@@ -57,20 +62,23 @@ def roll():
         write_json(names)
 
         # return the random name
-        return random_name
+        return { "message": random_name.capitalize() }, 200
     
     # if the username is not part of family
-    if not names[username]["family"]:
+    # if not names[username]["family"]:
+    if not names.get(username).get("family"):
         # create a list of all names possible (not chosen yet and excluding self and part of family)
         options = []
         for name in names:
             if name == username:
                 continue
                 
-            if names[name]["chosen"]:
+            # if names[name]["chosen"]:
+            if names.get(name).get("chosen"):
                 continue
                 
-            if not names[name]["family"]:
+            # if not names[name]["family"]:
+            if not names.get(name).get("family"):
                 continue
                 
             options.append(name)
@@ -85,9 +93,9 @@ def roll():
         write_json(names)
 
         # return the random name
-        return random_name
+        return { "message": random_name.capitalize() }, 200
     
-    return "error"
+    return { "message": "error" }, 200
 
 
 if __name__ == "__main__":
