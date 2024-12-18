@@ -14,13 +14,13 @@ services:
       - api.network
 
   backend:
-    image: soranosuke/spp_backend:latest
+    image: soranosuke/ssp_backend:latest
     platform: linux/amd64
     networks:
       - api.network
   
   frontend:
-    image: soranosuke/spp_frontend:latest
+    image: soranosuke/ssp_frontend:latest
     platform: linux/amd64
     networks:
       - api.network
