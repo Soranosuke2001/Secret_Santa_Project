@@ -1,28 +1,18 @@
-import logging
 import random
 from flask import Flask
 from flask import request
 from flask_cors import CORS
 
-from helper import read_json, write_json
+from helper import read_json, write_json, read_log_config
 
+logger = read_log_config()
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
-
-handler = logging.StreamHandler()
-handler.setLevel(logging.DEBUG)  # Adjust the log level as needed
-formatter = logging.Formatter(
-    "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-)
-handler.setFormatter(formatter)
-app.logger.addHandler(handler)
-app.logger.setLevel(logging.DEBUG)
 
 @app.route('/check/user')
 def create_user():
     username = request.args.get("username").lower()
-    app.logger.critical('Testing u shit')
-    app.logger.info(f'Received Request with username: {username}')
+    logger.info(f'Received Request with username: {username}')
 
     names = read_json()
 
@@ -35,19 +25,19 @@ def create_user():
             names[username]["login"] = True
             write_json(names)
 
-            app.logger.info("Response: Valid")
+            logger.info("Response: Valid")
             return { "message": "valid" }, 200
         
-        app.logger.info("Response: Completed")
+        logger.info("Response: Completed")
         return { "message": "completed" }, 200
 
-    app.logger.info("Response: Invalid")
+    logger.info("Response: Invalid")
     return { "message": "invalid" }, 200
 
 @app.route('/roll')
 def roll():
     username = request.args.get("username").lower()
-    app.logger.info(f'Received Request with username: {username}')
+    logger.info(f'Received Request with username: {username}')
 
     # read the json file
     names = read_json()
@@ -67,8 +57,8 @@ def roll():
     
         # choose a random name
         random_name = random.choice(options)
-        app.logger.info(f'Names available: {options}')
-        app.logger.info(f'Random name chosen: {random_name}')
+        logger.info(f'Names available: {options}')
+        logger.info(f'Random name chosen: {random_name}')
 
         # set the chosen to true for random name
         names[random_name]["chosen"] = True
@@ -97,8 +87,8 @@ def roll():
 
         # choose a random name
         random_name = random.choice(options)
-        app.logger.info(f'Names available: {options}')
-        app.logger.info(f'Random name chosen: {random_name}')
+        logger.info(f'Names available: {options}')
+        logger.info(f'Random name chosen: {random_name}')
 
         # set the chosen to true for random name
         names[random_name]["chosen"] = True
