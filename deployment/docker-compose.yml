@@ -2,13 +2,13 @@ version: "3.8"
 
 services:
   backend:
-    image: soranosuke/frontend:latest
+    image: ../backend:latest
     platform: linux/amd64
     networks:
       - api.network
   
   frontend:
-    image: soranosuke/frontend:latest
+    image: ../frontend:latest
     platform: linux/amd64
     networks:
       - api.network
