@@ -1,5 +1,4 @@
 import random
-import logging
 from flask import Flask
 from flask import request
 from flask_cors import CORS
@@ -8,8 +7,6 @@ from helper import read_json, write_json
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
-
-logging.basicConfig(level=logging.DEBUG)
 
 @app.route('/check/user')
 def create_user():
@@ -103,4 +100,4 @@ def roll():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080, debug=True)
+    app.run(host="0.0.0.0", port=8080)
