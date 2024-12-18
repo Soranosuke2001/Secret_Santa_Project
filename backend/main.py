@@ -14,6 +14,7 @@ logging.basicConfig(filename='app.log', level=logging.DEBUG)
 @app.route('/check/user')
 def create_user():
     username = request.args.get("username").lower()
+    app.logger.critical('Testing u shit')
     app.logger.info(f'Received Request with username: {username}')
 
     names = read_json()
