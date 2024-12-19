@@ -22,12 +22,6 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    if (data.message === "completed") {
-      return new Response(JSON.stringify({ message: data.message, user: data.user }), {
-        status: 200,
-      });
-    }
-
     return new Response(JSON.stringify({ message: data.message }), {
       status: 200,
     });
