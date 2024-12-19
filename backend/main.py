@@ -1,13 +1,15 @@
 import random
-from flask import Flask
-from flask import request
+from flask import Flask, Blueprint, request
 from flask_cors import CORS
 
 from helper import read_json, write_json, read_log_config
 from db_functions import create_db, delete_db, set_default, connect_db, check_user
 
+backend = Blueprint("backend", __name__, url_prefix="/backend")
+
 logger = read_log_config()
 app = Flask(__name__)
+app.register_blueprint(backend)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 DB_SESSION = connect_db(logger)
