@@ -10,12 +10,12 @@ function Roll() {
   const searchParams = useSearchParams();
   const username = searchParams.get("username");
 
-  // State for controlling card flip
+  // State to track card flipping
   const [isFlipped, setIsFlipped] = useState(false);
 
-  // Toggle flip state on click
+  // Toggle card flip state
   const handleCardClick = () => {
-    setIsFlipped((prev) => !prev);
+    setIsFlipped((prevState) => !prevState);
   };
 
   return (
@@ -27,18 +27,22 @@ function Roll() {
           </h2>
           <div className="mx-auto grid gap-12 space-y-10">
             <div
-              className="group h-96 w-96 [perspective:1000px]"
-              onClick={handleCardClick}
-              onKeyPress={(e) => e.key === "Enter" && handleCardClick()}
-              tabIndex={0} // Makes the card focusable for accessibility
-              role="button" // Indicates it's interactive
+              className="h-96 w-96 relative [perspective:1000px]" // Card container
+              onClick={handleCardClick} // Handle clicks
+              tabIndex={0} // Make card focusable
+              role="button" // Semantic button role
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  handleCardClick(); // Flip on Enter or Space key
+                }
+              }}
             >
               <div
-                className={`relative h-full w-full rounded-xl shadow-xl transition-all duration-500 [transform-style:preserve-3d] ${
+                className={`relative h-full w-full rounded-xl shadow-xl transition-transform duration-500 [transform-style:preserve-3d] ${
                   isFlipped ? "[transform:rotateY(180deg)]" : ""
                 }`}
               >
-                {/* Front face with image */}
+                {/* Front face */}
                 <div className="absolute inset-0 h-full w-full rounded-xl [backface-visibility:hidden] bg-neutral-900">
                   <div className="w-full mt-9">
                     <PiHandTapThin className="h-52 w-52 text-white mx-auto" />
@@ -47,7 +51,7 @@ function Roll() {
                     タップしてね
                   </p>
                 </div>
-                {/* Back face with text */}
+                {/* Back face */}
                 <div className="absolute inset-0 h-full w-full rounded-xl bg-neutral-900 px-12 text-center text-slate-200 [transform:rotateY(180deg)] [backface-visibility:hidden]">
                   <div className="flex min-h-full flex-col items-center justify-center">
                     <p className="text-5xl text-pretty text-center mb-4 text-white">
