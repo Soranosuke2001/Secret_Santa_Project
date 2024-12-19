@@ -1,60 +1,60 @@
 users = [
     {
-        "id": "sora",
+        "name": "sora",
         "login": False,
         "family": True,
         "chosen": False
     },
     {
-        "id": "yura",
+        "name": "yura",
         "login": False,
         "family": True,
         "chosen": False
     },
     {
-        "id": "billy",
+        "name": "billy",
         "login": False,
         "family": True,
         "chosen": False
     },
     {
-        "id": "eiko",
+        "name": "eiko",
         "login": False,
         "family": True,
         "chosen": False
     },
     {
-        "id": "sayoko",
+        "name": "sayoko",
         "login": False,
         "family": True,
         "chosen": False
     },
     {
-        "id": "takanobu",
+        "name": "takanobu",
         "login": False,
         "family": True,
         "chosen": False
     },
     {
-        "id": "aika",
+        "name": "aika",
         "login": False,
         "family": False,
         "chosen": False
     },
     {
-        "id": "ritsuki",
+        "name": "ritsuki",
         "login": False,
         "family": False,
         "chosen": False
     },
     {
-        "id": "ayano",
+        "name": "ayano",
         "login": False,
         "family": False,
         "chosen": False
     },
     {
-        "id": "satoshi",
+        "name": "satoshi",
         "login": False,
         "family": False,
         "chosen": False
