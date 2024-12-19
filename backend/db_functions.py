@@ -123,6 +123,7 @@ def get_random_name(DB_SESSION, username):
     session.close()
     return random_name
 
+
 def get_chosen(DB_SESSION, username):
     session: Session = DB_SESSION()
 
