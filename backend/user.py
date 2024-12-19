@@ -1,6 +1,5 @@
-from datetime import datetime
+from sqlalchemy import Column, Integer, String, Boolean
 
-from sqlalchemy import Column, Integer, String, DateTime, Boolean
 from base import Base
 
 class User(Base):
@@ -8,7 +7,8 @@ class User(Base):
 
     __tablename__ = "user"
 
-    name = Column(String(50), primary_key=True)
+    id = Column(Integer, primary_key=True)
+    name = Column(String(50))
     family = Column(Boolean, nullable=False)
     login = Column(Boolean, nullable=False)
     chosen = Column(Boolean, nullable=False)
@@ -22,6 +22,7 @@ class User(Base):
     def to_dict(self):
         dict = {}
 
+        dict['id'] = self.id
         dict['name'] = self.name
         dict['family'] = self.family
         dict['login'] = self.login
