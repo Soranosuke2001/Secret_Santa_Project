@@ -34,17 +34,10 @@ export default function Home() {
         return;
       }
 
-    } catch (e) {
-      console.log(e)
-      toast.error("エラーが発生しました")
-      toast.error(e)
-    }
-    
-    // get random name
-    try {
+      // get random name
       const response2 = await fetch(`${process.env.NEXT_PUBLIC_ROLL_USERNAME}?username=${username}`)
       const result = await response2.json()
-
+  
       if (result.message === "error") {
         toast.error("エラーが発生しました")
         return;
