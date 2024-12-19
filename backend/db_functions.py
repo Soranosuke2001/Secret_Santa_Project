@@ -67,7 +67,7 @@ def set_default(DB_SESSION):
 def check_user(DB_SESSION, username):
     session: Session  = DB_SESSION()
 
-    user = session.query(User).filter(User.id == username).first()
+    user = session.query(User).filter(User.name == username).first()
 
     if user is None:
         session.close()
