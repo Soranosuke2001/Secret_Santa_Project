@@ -11,21 +11,29 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 DB_SESSION = connect_db(logger)
 
 
-@app.route('/check/user')
-def create_user():
+@app.route('/user')
+def user():
     username = request.args.get("username").lower()
     logger.info(f'Received Request with username: {username}')
+    with open('test.txt', 'a') as f:
+        f.write(f'/user {username}')
 
     result = check_user(DB_SESSION, username)
 
     if result == "invalid":
         logger.info("Response: Invalid")
+        with open('test.txt', 'a') as f:
+            f.write("Response: Invalid")
         return { "message": "invalid" }, 200
 
     if result == "completed":
         logger.info("Response: Completed")
+        with open('test.txt', 'a') as f:
+            f.write("Response: Completed")
         return { "message": "completed" }, 200
 
+    with open('test.txt', 'a') as f:
+        f.write("Response: Valid")
     logger.info("Response: Valid")
     return { "message": "valid" }, 200
 
