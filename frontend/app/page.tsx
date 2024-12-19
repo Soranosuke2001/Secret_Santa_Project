@@ -12,59 +12,50 @@ import { GrLinkNext } from "react-icons/gr";
 export default function Home() {
   const router = useRouter();
   const [username, setUsername] = useState<string>("");
-  const [usernameError, setUsernameError] = useState<boolean>(false);
-  const [rollCompleted, setRollCompleted] = useState<boolean>(false);
 
-  function clickHandler() {
+  async function clickHandler() {
     if (username === "") {
-      setUsernameError(true);
       toast.error("名前が間違ってます")
       return;
     }
 
     // send request to backend to check username
-    fetch(`${process.env.NEXT_PUBLIC_CHECK_USERNAME}?username=${username}`)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.message === "invalid") {
-          setUsernameError(true);
-        } else if (data.message === "completed") {
-          setRollCompleted(true);
-        } else {
-          setRollCompleted(false);
-          setUsernameError(false);
-        }
-      })
-      .catch((e) => {
-        console.log(e)
-        toast.error("エラーが発生しました")
-        toast.error(e)
-      });
+    try {
+      const response1 = await fetch(`${process.env.NEXT_PUBLIC_CHECK_USERNAME}?username=${username}`)
+      const data = await response1.json()
 
-    if (usernameError) {
-      toast.error("名前が間違ってます")
-      return;
+      if (data === "invalid") {
+        toast.error("名前が間違ってます")
+        return;
+      }
+
+      if (data === "completed") {
+        toast.error("違う名前を入力してね")
+        return;
+      }
+
+    } catch (e) {
+      console.log(e)
+      toast.error("エラーが発生しました")
+      toast.error(e)
     }
-
-    if (rollCompleted) {
-      toast.error("違う名前を入力してね")
-      return;
-    }
-
+    
     // get random name
-    fetch(`${process.env.NEXT_PUBLIC_ROLL_USERNAME}?username=${username}`)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.message === "error") {
-          toast.error("エラーが発生しました")
-        }
-        router.push(`/roll?username=${data.message}`);
-      })
-      .catch((e) => {
-        console.log(e)
+    try {
+      const response2 = await fetch(`${process.env.NEXT_PUBLIC_ROLL_USERNAME}?username=${username}`)
+      const result = await response2.json()
+
+      if (result.message === "error") {
         toast.error("エラーが発生しました")
-        toast.error(e)
-      })
+        return;
+      }
+      
+      router.push(`/roll?username=${result.message}`);
+    } catch (e) {
+      console.log(e)
+      toast.error("エラーが発生しました")
+      toast.error(e)
+    }
   }
 
   return (
