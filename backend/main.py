@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 from helper import read_log_config
@@ -26,10 +26,10 @@ def user():
         logger.info("Response: Completed")
         random_name = get_chosen(DB_SESSION, username)
 
-        return { 
-            "message": "completed",
-            "user": random_name.capitalize()
-        }, 200
+        return jsonify(
+            message="completed",
+            user=random_name.capitalize()
+        ), 200
 
     logger.info("Response: Valid")
     return { "message": "valid" }, 200

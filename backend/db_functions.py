@@ -127,8 +127,5 @@ def get_chosen(DB_SESSION, username):
     session: Session = DB_SESSION()
 
     user = session.query(User).filter(User.name == username).first()
-    print(user)
-    print(user.name)
-    print(user.gifting)
     session.close()
     return user.gifting
