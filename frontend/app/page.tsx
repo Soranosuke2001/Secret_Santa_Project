@@ -24,14 +24,12 @@ export default function Home() {
       const response1 = await fetch(`${process.env.NEXT_PUBLIC_CHECK_USERNAME}?username=${username}`)
       const data = await response1.json()
 
-      console.log(data)
-
-      if (data === "invalid") {
+      if (data.message === "invalid") {
         toast.error("名前が間違ってます")
         return;
       }
 
-      if (data === "completed") {
+      if (data.message === "completed") {
         toast.error("違う名前を入力してね")
         return;
       }
