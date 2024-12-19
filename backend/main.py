@@ -4,35 +4,51 @@ from flask import request
 from flask_cors import CORS
 
 from helper import read_json, write_json, read_log_config
+from db_functions import create_db, set_default, connect_db, check_user
 
 logger = read_log_config()
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
+
+DB_SESSION = connect_db(logger)
 
 @app.route('/check/user')
 def create_user():
     username = request.args.get("username").lower()
     logger.info(f'Received Request with username: {username}')
 
-    names = read_json()
+    result = check_user(DB_SESSION, username)
 
-    if names == {}:
+    # names = read_json()
+
+    # if names == {}:
+    #     return { "message": "invalid" }, 200
+
+    # if username in names.keys():
+    #     # set the login to true
+    #     if not names[username]["login"]:
+    #         names[username]["login"] = True
+    #         write_json(names)
+
+    #         logger.info("Response: Valid")
+    #         return { "message": "valid" }, 200
+        
+    #     logger.info("Response: Completed")
+    #     return { "message": "completed" }, 200
+
+    # logger.info("Response: Invalid")
+    # return { "message": "invalid" }, 200
+
+    if result == "invalid":
+        logger.info("Response: Invalid")
         return { "message": "invalid" }, 200
 
-    if username in names.keys():
-        # set the login to true
-        if not names[username]["login"]:
-            names[username]["login"] = True
-            write_json(names)
-
-            logger.info("Response: Valid")
-            return { "message": "valid" }, 200
-        
+    if result == "completed":
         logger.info("Response: Completed")
         return { "message": "completed" }, 200
 
-    logger.info("Response: Invalid")
-    return { "message": "invalid" }, 200
+    logger.info("Response: Valid")
+    return { "message": "valid" }, 200
 
 @app.route('/roll')
 def roll():
@@ -101,4 +117,6 @@ def roll():
 
 
 if __name__ == "__main__":
+    create_db()
+    set_default(DB_SESSION)
     app.run(host="0.0.0.0", port=8080, debug=True)
