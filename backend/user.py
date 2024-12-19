@@ -8,16 +8,18 @@ class User(Base):
     __tablename__ = "user"
 
     id = Column(Integer, primary_key=True)
-    name = Column(String(50))
+    name = Column(String(50), nullable=False)
     family = Column(Boolean, nullable=False)
     login = Column(Boolean, nullable=False)
     chosen = Column(Boolean, nullable=False)
+    gifting = Column(String(50), nullable=False)
 
-    def __init__(self, name, family, login, chosen):
+    def __init__(self, name, family, login, chosen, gifting):
         self.name = name
         self.family = family
         self.login = login
         self.chosen = chosen
+        self.gifting = gifting
 
     def to_dict(self):
         dict = {}
@@ -27,5 +29,6 @@ class User(Base):
         dict['family'] = self.family
         dict['login'] = self.login
         dict['chosen'] = self.chosen
+        dict['gifting'] = self.gifting
 
         return dict

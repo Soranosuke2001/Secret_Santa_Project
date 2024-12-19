@@ -19,7 +19,8 @@ def create_db():
         name VARCHAR(50) NOT NULL,
         family BOOLEAN NOT NULL,
         login BOOLEAN NOT NULL,
-        chosen BOOLEAN NOT NULL
+        chosen BOOLEAN NOT NULL,
+        gifting VARCHAR(50) NOT NULL
     );
     '''
 
@@ -63,7 +64,7 @@ def set_default(DB_SESSION):
     session: Session = DB_SESSION()
 
     for user in users:
-        entry = User(user["name"], user["family"], user["login"], user["chosen"])
+        entry = User(user["name"], user["family"], user["login"], user["chosen"], user["gifting"])
         session.add(entry)
     
     session.commit()
@@ -114,7 +115,16 @@ def get_random_name(DB_SESSION, username):
 
     random_user = session.query(User).filter(User.name == random_name).first()
     random_user.chosen = True
+
+    gifter = session.query(User).filter(User.name == username).first()
+    gifter.gifting = random_name
     
     session.commit()
     session.close()
     return random_name
+
+def get_chosen(DB_SESSION, username):
+    session: Session = DB_SESSION()
+
+    user = session.query(User).filter(User.name == username).first()
+    return user.gifting

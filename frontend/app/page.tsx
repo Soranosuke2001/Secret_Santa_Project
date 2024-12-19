@@ -30,8 +30,7 @@ export default function Home() {
       }
 
       if (data.message === "completed") {
-        toast.error("違う名前を入力してね")
-        return;
+        router.push(`/roll?username=${data.gifting}`);
       }
 
       // get random name

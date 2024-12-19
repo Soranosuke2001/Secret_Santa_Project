@@ -2,7 +2,7 @@ from flask import Flask, request
 from flask_cors import CORS
 
 from helper import read_log_config
-from db_functions import create_db, delete_db, set_default, connect_db, check_user, get_random_name
+from db_functions import create_db, delete_db, set_default, connect_db, check_user, get_random_name, get_chosen
 
 logger = read_log_config()
 app = Flask(__name__)
@@ -15,25 +15,19 @@ DB_SESSION = connect_db(logger)
 def user():
     username = request.args.get("username").lower()
     logger.info(f'Received Request with username: {username}')
-    with open('test.txt', 'a') as f:
-        f.write(f'/user {username}')
 
     result = check_user(DB_SESSION, username)
 
     if result == "invalid":
         logger.info("Response: Invalid")
-        with open('test.txt', 'a') as f:
-            f.write("Response: Invalid")
         return { "message": "invalid" }, 200
 
     if result == "completed":
         logger.info("Response: Completed")
-        with open('test.txt', 'a') as f:
-            f.write("Response: Completed")
-        return { "message": "completed" }, 200
+        random_name = get_chosen(DB_SESSION, username)
 
-    with open('test.txt', 'a') as f:
-        f.write("Response: Valid")
+        return { "message": "completed", "gifting": random_name.capitalize() }, 200
+
     logger.info("Response: Valid")
     return { "message": "valid" }, 200
 
