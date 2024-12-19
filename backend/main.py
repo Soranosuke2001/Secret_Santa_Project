@@ -1,15 +1,15 @@
-import random
 from flask import Flask, request
 from flask_cors import CORS
 
-from helper import read_json, write_json, read_log_config
-from db_functions import create_db, delete_db, set_default, connect_db, check_user
+from helper import read_log_config
+from db_functions import create_db, delete_db, set_default, connect_db, check_user, get_random_name
 
 logger = read_log_config()
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 DB_SESSION = connect_db(logger)
+
 
 @app.route('/backend/check/user')
 def create_user():
@@ -29,70 +29,17 @@ def create_user():
     logger.info("Response: Valid")
     return { "message": "valid" }, 200
 
+
 @app.route('/backend/roll')
 def roll():
     username = request.args.get("username").lower()
     logger.info(f'Received Request with username: {username}')
 
-    # read the json file
-    names = read_json()
+    random_name = get_random_name(DB_SESSION, username)
 
-    # check if the username is part of family
-    if names[username]["family"]:
-        # create a list of all names possible (not chosen yet and excluding self)
-        options = []
-        for name in names:
-            if name == username:
-                continue
-
-            if names[name]["chosen"]:
-                continue
-            
-            options.append(name)
-    
-        # choose a random name
-        random_name = random.choice(options)
-        logger.info(f'Names available: {options}')
-        logger.info(f'Random name chosen: {random_name}')
-
-        # set the chosen to true for random name
-        names[random_name]["chosen"] = True
-
-        # overwrite the json file
-        write_json(names)
-
-        # return the random name
-        return { "message": random_name.capitalize() }, 200
-    
-    # if the username is not part of family
-    else:
-        # create a list of all names possible (not chosen yet and excluding self and part of family)
-        options = []
-        for name in names:
-            if name == username:
-                continue
-                
-            if names[name]["chosen"]:
-                continue
-                
-            if not names[name]["family"]:
-                continue
-                
-            options.append(name)
-
-        # choose a random name
-        random_name = random.choice(options)
-        logger.info(f'Names available: {options}')
-        logger.info(f'Random name chosen: {random_name}')
-
-        # set the chosen to true for random name
-        names[random_name]["chosen"] = True
-
-        # overwrite the json file
-        write_json(names)
-
-        # return the random name
-        return { "message": random_name.capitalize() }, 200
+    # choose a random name
+    logger.info(f'Random name chosen: {random_name}')
+    return { "message": random_name.capitalize() }, 200
 
 
 if __name__ == "__main__":

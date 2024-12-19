@@ -1,12 +1,14 @@
+import random
 import time
 import sqlite3
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, and_
 from sqlalchemy.orm import sessionmaker, Session
 
 from user import User
 from constants import users
 
 from base import Base
+
 
 def create_db():
     conn = sqlite3.connect('data.db')
@@ -25,6 +27,7 @@ def create_db():
     conn.commit()
     conn.close()
 
+
 def delete_db():
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
@@ -34,6 +37,7 @@ def delete_db():
     c.execute(DROP_TABLE)
     conn.commit()
     conn.close()
+
 
 def connect_db(logger):
     SQLITE_CONNECTED = False
@@ -54,6 +58,7 @@ def connect_db(logger):
     
     return DB_SESSION
 
+
 def set_default(DB_SESSION):
     session: Session = DB_SESSION()
 
@@ -63,6 +68,7 @@ def set_default(DB_SESSION):
     
     session.commit()
     session.close()
+
 
 def check_user(DB_SESSION, username):
     session: Session  = DB_SESSION()
@@ -82,3 +88,33 @@ def check_user(DB_SESSION, username):
     session.close()
     return "valid"
 
+
+def check_family(DB_SESSION, username):
+    session: Session = DB_SESSION()
+
+    result = session.query(User).filter(User.name == username).first()
+    return result.family
+
+
+def get_random_name(DB_SESSION, username):
+    session: Session = DB_SESSION()
+
+    family = check_family(DB_SESSION, username)
+    options = []
+
+    if family:
+        result = session.query(User).filter(and_(User.name != username, User.chosen == False)).all()
+    else:
+        result = session.query(User).filter(and_(User.name != username, User.chosen == False, User.family == True)).all()
+
+    for user in result:
+        options.append(user.name)
+    
+    random_name = random.choice(options)
+
+    random_user = session.query(User).filter(User.name == random_name).first()
+    random_user.chosen = True
+    
+    session.commit()
+    session.close()
+    return random_name
