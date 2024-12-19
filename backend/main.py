@@ -4,7 +4,7 @@ from flask import request
 from flask_cors import CORS
 
 from helper import read_json, write_json, read_log_config
-from db_functions import create_db, set_default, connect_db, check_user
+from db_functions import create_db, delete_db, set_default, connect_db, check_user
 
 logger = read_log_config()
 app = Flask(__name__)
@@ -117,6 +117,7 @@ def roll():
 
 
 if __name__ == "__main__":
+    delete_db()
     create_db()
     set_default(DB_SESSION)
     app.run(host="0.0.0.0", port=8080, debug=True)

@@ -2,6 +2,8 @@ FROM python:3.12
 
 LABEL maintainer = "sschlegel1@my.bcit.ca"
 
+RUN apt-get update && apt-get install -y sqlite3
+
 WORKDIR /app
 COPY . .
 

@@ -25,6 +25,16 @@ def create_db():
     conn.commit()
     conn.close()
 
+def delete_db():
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+
+    DROP_TABLE = 'DROP TABLE IF EXISTS user;'
+
+    c.execute(DROP_TABLE)
+    conn.commit()
+    conn.close()
+
 def connect_db(logger):
     SQLITE_CONNECTED = False
 
