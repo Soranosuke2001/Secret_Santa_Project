@@ -29,21 +29,21 @@ export default function Home() {
         return;
       }
 
-      if (data.message === "completed") {
+      if (data.message === "valid") {
+        // get random name
+        const response2 = await fetch(`${process.env.NEXT_PUBLIC_ROLL_USERNAME}?username=${username}`)
+        const result = await response2.json()
+    
+        if (result.message === "error") {
+          toast.error("エラーが発生しました")
+          return;
+        }
+        
+        router.push(`/roll?username=${result.message}`);
+      } else {
         console.log(data)
-        router.push(`/roll?username=${data.gifting}`);
+        router.push(`/roll?username=${data.message}`);
       }
-
-      // get random name
-      const response2 = await fetch(`${process.env.NEXT_PUBLIC_ROLL_USERNAME}?username=${username}`)
-      const result = await response2.json()
-  
-      if (result.message === "error") {
-        toast.error("エラーが発生しました")
-        return;
-      }
-      
-      router.push(`/roll?username=${result.message}`);
     } catch (e) {
       console.log(e)
       toast.error("エラーが発生しました")
