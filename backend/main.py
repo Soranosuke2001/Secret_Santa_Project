@@ -26,7 +26,10 @@ def user():
         logger.info("Response: Completed")
         random_name = get_chosen(DB_SESSION, username)
 
-        return { "message": random_name.capitalize() }, 200
+        return { 
+            "message": "completed",
+            "user": random_name.capitalize()
+        }, 200
 
     logger.info("Response: Valid")
     return { "message": "valid" }, 200
