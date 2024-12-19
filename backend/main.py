@@ -18,26 +18,6 @@ def create_user():
 
     result = check_user(DB_SESSION, username)
 
-    # names = read_json()
-
-    # if names == {}:
-    #     return { "message": "invalid" }, 200
-
-    # if username in names.keys():
-    #     # set the login to true
-    #     if not names[username]["login"]:
-    #         names[username]["login"] = True
-    #         write_json(names)
-
-    #         logger.info("Response: Valid")
-    #         return { "message": "valid" }, 200
-        
-    #     logger.info("Response: Completed")
-    #     return { "message": "completed" }, 200
-
-    # logger.info("Response: Invalid")
-    # return { "message": "invalid" }, 200
-
     if result == "invalid":
         logger.info("Response: Invalid")
         return { "message": "invalid" }, 200
