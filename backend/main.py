@@ -11,7 +11,7 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 DB_SESSION = connect_db(logger)
 
 
-@app.route('/backend/check/user')
+@app.route('/check/user')
 def create_user():
     username = request.args.get("username").lower()
     logger.info(f'Received Request with username: {username}')
@@ -30,7 +30,7 @@ def create_user():
     return { "message": "valid" }, 200
 
 
-@app.route('/backend/roll')
+@app.route('/roll')
 def roll():
     username = request.args.get("username").lower()
     logger.info(f'Received Request with username: {username}')
