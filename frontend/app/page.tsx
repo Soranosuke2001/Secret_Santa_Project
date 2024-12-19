@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { GrLinkNext } from "react-icons/gr";
 
 export default function Home() {
@@ -17,6 +18,7 @@ export default function Home() {
   function clickHandler() {
     if (username === "") {
       setUsernameError(true);
+      toast.error("名前が間違ってます")
       return;
     }
 
@@ -35,10 +37,17 @@ export default function Home() {
       })
       .catch((e) => {
         console.log(e)
-        router.push('/error')
+        toast.error("エラーが発生しました")
+        toast.error(e)
       });
 
-    if (usernameError || rollCompleted) {
+    if (usernameError) {
+      toast.error("名前が間違ってます")
+      return;
+    }
+
+    if (rollCompleted) {
+      toast.error("違う名前を入力してね")
       return;
     }
 
@@ -47,13 +56,14 @@ export default function Home() {
       .then((response) => response.json())
       .then((data) => {
         if (data.message === "error") {
-          router.push('/error')
+          toast.error("エラーが発生しました")
         }
         router.push(`/roll?username=${data.message}`);
       })
       .catch((e) => {
         console.log(e)
-        router.push('/error')
+        toast.error("エラーが発生しました")
+        toast.error(e)
       })
   }
 
@@ -74,12 +84,6 @@ export default function Home() {
           <Label htmlFor="username" className="text-neutral-400">
             ローマ字で名前を入力してね。
           </Label>
-          {usernameError && (
-            <p className="text-red-500">名前が間違ってます。</p>
-          )}
-          {rollCompleted && (
-            <p className="text-green-500">もうやったよね。</p>
-          )}
           <Input
             id="username"
             placeholder="Sora"
