@@ -3,12 +3,20 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import { PiHandTapThin } from "react-icons/pi";
 
 function Roll() {
   const searchParams = useSearchParams();
   const username = searchParams.get("username");
+
+  // State for controlling card flip
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  // Toggle flip state on click
+  const handleCardClick = () => {
+    setIsFlipped((prev) => !prev);
+  };
 
   return (
     <section className="py-16 mx-auto">
@@ -18,8 +26,18 @@ function Roll() {
             誰があったかな？？
           </h2>
           <div className="mx-auto grid gap-12 space-y-10">
-            <div className="group h-96 w-96 [perspective:1000px]">
-              <div className="relative h-full w-full rounded-xl shadow-xl transition-all duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+            <div
+              className="group h-96 w-96 [perspective:1000px]"
+              onClick={handleCardClick}
+              onKeyPress={(e) => e.key === "Enter" && handleCardClick()}
+              tabIndex={0} // Makes the card focusable for accessibility
+              role="button" // Indicates it's interactive
+            >
+              <div
+                className={`relative h-full w-full rounded-xl shadow-xl transition-all duration-500 [transform-style:preserve-3d] ${
+                  isFlipped ? "[transform:rotateY(180deg)]" : ""
+                }`}
+              >
                 {/* Front face with image */}
                 <div className="absolute inset-0 h-full w-full rounded-xl [backface-visibility:hidden] bg-neutral-900">
                   <div className="w-full mt-9">
@@ -57,7 +75,7 @@ function Roll() {
 export default function Page() {
   return (
     <Suspense>
-      <Roll/>
+      <Roll />
     </Suspense>
-  )
+  );
 }
