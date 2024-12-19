@@ -12,7 +12,7 @@ def create_db():
     conn = sqlite3.connect('data.db')
 
     create_users_table = '''
-        CREATE TABLE IF NOT EXISTS users (
+        CREATE TABLE IF NOT EXISTS user (
         name VARCHAR(50) PRIMARY KEY NOT NULL,
         family BOOLEAN NOT NULL,
         login BOOLEAN NOT NULL,
