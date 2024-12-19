@@ -30,6 +30,7 @@ export default function Home() {
       }
 
       if (data.message === "completed") {
+        console.log(data)
         router.push(`/roll?username=${data.gifting}`);
       }
 
